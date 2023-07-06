@@ -2,17 +2,20 @@ import sqlite3
 import paho.mqtt.client as mqtt
 
 # Função para lidar com a mensagem recebida via MQTT
+
 def on_message(client, userdata, msg):
+
     # Decodifica a mensagem recebida
+
     sensor_data = msg.payload.decode()
 
     sensor_data = sensor_data.split(" ")
 
     co2 = sensor_data[1]
 
-    luz = sensor_data[1]
+    luminosidade = sensor_data[1]
 
-    tmp = sensor_data[1]
+    temperatura = sensor_data[1]
 
     hora = sensor_data[4].replace("]-","")
 
@@ -34,9 +37,8 @@ def on_message(client, userdata, msg):
 
     cursor = conn.cursor()
 
-    cursor.execute('INSERT INTO dados_sensores (temperatura, luminosidade, co2) VALUES (?, ?, ?)',
-                   
-                   (temperatura, luminosidade, co2))
+    cursor.execute('INSERT INTO dados_sensores (temperatura, luminosidade, co2, data, hora) VALUES (?, ?, ?, ?, ?)',
+                   (temperatura, luminosidade, co2, data, hora))
     
     conn.commit()
 
