@@ -11,23 +11,23 @@ def on_message(client, userdata, msg):
 
     sensor_data = sensor_data.split(" ")
 
-    co2 = sensor_data[1]
+    co2 = sensor_data[5]
 
-    luminosidade = sensor_data[1]
+ ##   luminosidade = sensor_data[1]
 
-    temperatura = sensor_data[1]
+ ##   temperatura = sensor_data[1]
 
-    hora = sensor_data[4].replace("]-","")
+    hora = sensor_data[19].replace("]-","")
 
-    data = sensor_data[6].replace("]","")
+    data = sensor_data[31].replace("]","")
 
     # Divide a mensagem em valores separados
 
     values = sensor_data.split(',')
 
-    temperatura = float(values[0])
+ ##   temperatura = float(values[0])
 
-    luminosidade = float(values[1])
+ ##   luminosidade = float(values[1])
 
     co2 = float(values[2])
     
@@ -37,8 +37,11 @@ def on_message(client, userdata, msg):
 
     cursor = conn.cursor()
 
-    cursor.execute('INSERT INTO dados_sensores (temperatura, luminosidade, co2, data, hora) VALUES (?, ?, ?, ?, ?)',
-                   (temperatura, luminosidade, co2, data, hora))
+    cursor.execute('INSERT INTO dados_sensores (co2, data, hora) VALUES (?, ?, ?)',
+                   (co2, data, hora))
+
+    #cursor.execute('INSERT INTO dados_sensores (temperatura, luminosidade, co2, data, hora) VALUES (?, ?, ?, ?, ?)',
+    #               (temperatura, luminosidade, co2, data, hora))
     
     conn.commit()
 
