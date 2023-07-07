@@ -1,6 +1,9 @@
 import sqlite3
 import paho.mqtt.client as mqtt
 
+
+
+
 # Função para lidar com a mensagem recebida via MQTT
 
 def on_message(client, userdata, msg):
@@ -36,6 +39,16 @@ def on_message(client, userdata, msg):
     conn = sqlite3.connect('sensor_data.db')
 
     cursor = conn.cursor()
+
+    cursor.execute('''
+       CREATE TABLE IF NOT EXISTS dados_sensores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            valor INTEGER,
+            data INTEGER,
+            hora INTEGER
+        )
+    ''')
 
     cursor.execute('INSERT INTO dados_sensores (co2, data, hora) VALUES (?, ?, ?)',
                    (co2, data, hora))
