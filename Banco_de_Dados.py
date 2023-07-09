@@ -2,8 +2,6 @@ import sqlite3
 import paho.mqtt.client as mqtt
 
 
-
-
 # Função para lidar com a mensagem recebida via MQTT
 
 def on_message(client, userdata, msg):
