@@ -29,8 +29,10 @@ def create_db():
         print(f"Erro criando tabela: {e}")
 
 
-def insert_db(values):
+def insert_values(values):
     # values é uma lista
+    # exemplo: INSERT INTO sensores (data, co2, temperatura, luz) VALUES('2023-07-24 16:34:50', 678, 22, 74);
+
     base_query = "INSERT INTO sensores (data, co2, temperatura, luz) VALUES("
     query = base_query + values[0] + ',' + values[1] + ',' + values[2] + ',' + values[3] + ');'
     try:
