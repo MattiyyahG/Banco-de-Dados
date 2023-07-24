@@ -28,6 +28,17 @@ def create_db():
         print(f"Erro criando tabela: {e}")
 
 
+def insert_db(values):
+    # values é uma lista
+    base_query = "INSERT INTO sensores (data, co2, temperatura, luz) VALUES("
+    query = base_query + values[0] + ',' + values[1] + ',' + values[2] + ',' + values[3] + ');'
+    try:
+        cursor.execute(query)
+        print("Valores inseridos: ", values)
+    except db.Error as e:
+        print(f"Erro inserindo dados na tabela sensores: {e}")
+
+
 create_db()
 
 connect.close()
