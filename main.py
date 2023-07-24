@@ -13,15 +13,16 @@ cursor = connect.cursor()
 
 
 def create_db():
+    table = '''CREATE TABLE IF NOT EXISTS lens.sensores(
+        id INT NOT NULL AUTO_INCREMENT,
+        data DATETIME NOT NULL, 
+        co2 INT NOT NULL,
+        temperatura INT NOT NULL,
+        luz INT NOT NULL,
+        PRIMARY KEY (id)
+    );'''
+    
     try:
-        table = '''CREATE TABLE IF NOT EXISTS lens.sensores(
-            id INT NOT NULL AUTO_INCREMENT,
-            data DATETIME NOT NULL, 
-            co2 INT NOT NULL,
-            temperatura INT NOT NULL,
-            luz INT NOT NULL,
-            PRIMARY KEY (id)
-        );'''
         cursor.execute(table)
         print("Tabela criada")
     except db.Error as e:
