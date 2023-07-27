@@ -38,10 +38,9 @@ def create_db():
     except db.Error as e:
         print(f"Erro criando tabela: {e}")
 
-# Cria um Dicionário onde serão inseridas as informações 
-
 def tratamento(a): 
-    # função onde os dados são separandos e inserindos no dicionário
+
+    # função onde os dados são separados para serem inseridos 
     
     global final_CO2
     global final_luz
@@ -84,7 +83,9 @@ def tratamento(a):
         final_CO2 = co2
     
 def on_message(client, userdata, message): 
+
     # Função de recebimento das mensagens do broker onde a função "tratamento" está inserida
+
     if str(message.payload.decode('utf-8'))[0] == 'L':
         global prov_msg_luz 
         prov_msg_luz = str(message.payload.decode('utf-8'))
@@ -105,12 +106,8 @@ client = mqtt.Client('API_test')
 client.connect(mqttBroker)
 
 def insert_values():
-    # values é uma lista
-    # exemplo: INSERT INTO sensores (data, co2, temperatura, luz) VALUES('2023-07-24 16:34:50', 678, 22, 74);
     cursor.execute("USE lens;")
-
     base_query = f"INSERT INTO sensores (data, co2, temperatura, luz) VALUES('{final_data}', {final_CO2}, {final_Temp}, {final_luz})"
-    #query = base_query + values[0] + ',' + values[1] + ',' + values[2] + ',' + values[3] + ');'
     try: 
         cursor.execute(base_query)
         connect.commit()
@@ -119,8 +116,6 @@ def insert_values():
         print(f"Erro inserindo dados na tabela sensores: {e}")
 
 create_db()
-
-#connect.close()
 
 # Conexão com o broker
 
@@ -132,7 +127,6 @@ while(True):
     client.on_message = on_message
     time.sleep(2)
     client.loop_stop()
-    #values = [final_data, final_CO2, final_Temp, final_luz]
     insert_values()
     time.sleep(300)
 
