@@ -17,8 +17,8 @@ def create_db():
         table = '''CREATE TABLE IF NOT EXISTS lens.sensores(
             id INT NOT NULL AUTO_INCREMENT,
             data DATETIME NOT NULL, 
-            co2 INT NOT NULL,
-            temperatura INT NOT NULL,
+            co2 (PPM) INT NOT NULL,
+            temperatura (C) INT NOT NULL,
             luz INT NOT NULL,
             PRIMARY KEY (id)
         );'''
