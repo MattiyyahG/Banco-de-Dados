@@ -1,0 +1,1 @@
+SELECT * FROM `lens`.`sensores` LIMIT 1000;

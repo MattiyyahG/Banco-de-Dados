@@ -17,6 +17,7 @@ connect = db.connect(
     user=username,
     password=password,
     host='localhost'
+
 )
 
 cursor = connect.cursor()
@@ -25,8 +26,8 @@ def create_db():
     table = '''CREATE TABLE IF NOT EXISTS lens.sensores(
         id INT NOT NULL AUTO_INCREMENT,
         data DATETIME NOT NULL, 
-        co2_PPM INT NOT NULL,
-        temperatura_C INT NOT NULL,
+        co2 INT NOT NULL,
+        temperatura INT NOT NULL,
         luz INT NOT NULL,
         PRIMARY KEY (id)
     );'''
@@ -74,7 +75,7 @@ def tratamento(a):
         data_temp = ano + "-" + mes + "-" + dia
         final_data = data_temp + " " + hora_temp
         final_Temp = temp
-
+        
     if a[0] == 'C':
 
         co2_mensagem =  a
@@ -106,11 +107,13 @@ client.connect(mqttBroker)
 def insert_values():
     # values é uma lista
     # exemplo: INSERT INTO sensores (data, co2, temperatura, luz) VALUES('2023-07-24 16:34:50', 678, 22, 74);
+    cursor.execute("USE lens;")
 
-    base_query = f"INSERT INTO sensores (data, co2, temperatura, luz) VALUES({final_data},{final_CO2},{final_Temp},{final_luz})"
+    base_query = f"INSERT INTO sensores (data, co2, temperatura, luz) VALUES('{final_data}', {final_CO2}, {final_Temp}, {final_luz})"
     #query = base_query + values[0] + ',' + values[1] + ',' + values[2] + ',' + values[3] + ');'
-    try:
+    try: 
         cursor.execute(base_query)
+        connect.commit()
         print("Valores inseridos: ", final_data, final_CO2, final_Temp, final_luz)
     except db.Error as e:
         print(f"Erro inserindo dados na tabela sensores: {e}")
@@ -131,6 +134,6 @@ while(True):
     client.loop_stop()
     #values = [final_data, final_CO2, final_Temp, final_luz]
     insert_values()
-    time.sleep(10)
+    time.sleep(300)
 
 # Configuração de recebimneto de mensgem do topico "Labnet/Luz"
