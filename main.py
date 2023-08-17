@@ -1,5 +1,6 @@
 import mysql.connector as db
 import paho.mqtt.client as mqtt 
+import schedule
 import time
 
 username = "buda"
@@ -118,6 +119,7 @@ def insert_values():
 create_db()
 
 # Conexão com o broker
+schedule.every(5).minutes.do(insert_values)
 
 while(True):
     client.loop_start()
@@ -127,7 +129,8 @@ while(True):
     client.on_message = on_message
     time.sleep(2)
     client.loop_stop()
-    insert_values()
-    time.sleep(300)
+#    insert_values()
+    schedule.run_pending()
+    time.sleep(1)
 
-# Configuração de recebimneto de mensgem do topico "Labnet/Luz"
+# Configuração de recebimento de mensgem do topico "Labnet/Luz"
